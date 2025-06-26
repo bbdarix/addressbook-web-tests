@@ -6,6 +6,7 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
+using OpenQA.Selenium.Chrome;
 
 namespace addressbook_web_tests
 {
@@ -15,12 +16,13 @@ namespace addressbook_web_tests
         private IWebDriver driver;
         private string baseURL;
         private bool acceptNextAlert = true;
-        private StringBuilder verificationErrors = new StringBuilder();
+        private StringBuilder verificationErrors;
 
         [SetUp]
         public void SetupTest()
         {
             driver = new FirefoxDriver();
+            driver.Manage().Window.Maximize();
             baseURL = "http://localhost/addressbook";
             verificationErrors = new StringBuilder();
         }
@@ -42,6 +44,8 @@ namespace addressbook_web_tests
         [Test]
         public void TheUntitledTestCaseTest()
         {
+            driver.Navigate().GoToUrl(baseURL); // СНАЧАЛА открываем страницу
+            
             // ERROR: Caught exception [unknown command []]
             driver.FindElement(By.Name("user")).Click();
             driver.FindElement(By.Name("user")).Clear();
@@ -50,7 +54,7 @@ namespace addressbook_web_tests
             driver.FindElement(By.Name("pass")).Clear();
             driver.FindElement(By.Name("pass")).SendKeys("secret");
             driver.FindElement(By.XPath("//input[@value='Login']")).Click();
-            driver.Navigate().GoToUrl(baseURL);
+            driver.FindElement(By.LinkText("groups")).Click();
             driver.FindElement(By.Name("new")).Click();
             driver.FindElement(By.Name("group_name")).Click();
             driver.FindElement(By.Name("group_name")).Clear();
